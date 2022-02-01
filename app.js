@@ -556,21 +556,56 @@ emitter.emit('messageLogged');
 // was called.
 
 /* The order of listener, emitter is important here. the listener has to come before the emitter. If we register the listener after the 
-emit method, nothing would have happened because when call the emit() method, this emiiter iterates over all the registered listeners
+emit method, nothing would have happened because when call the emit() method, this emitter iterates over all the registered listeners
 and calls them synchronously. 
 */
 
+/*******************************************/
+/******** Lesson 11: Event Arguments *******/
+/*******************************************/
 
+// Quite often, when we want to raise an event, we also want to send some data about that event. For example,
 
+// When raising an event, we can add additional arguments which we refer to as event arguments.
+emitter.emit('messageLogged', 1, 'url');
+// We can add an id such as 1, we can add url. 
+// But this is not very useful. To make it more understandable, it is better
+// to encapsulate those values inside an object like a key-value pair.
+// Template: { key1: value1, key2: value2}
+// We refer to this object as 'event argument'. 
+emitter.emit('messageLogged', { id: 1, url: 'http//' });
 
+// When registering a listener here, the callback function can also receive the 'event argument'.
+// Register a listener
+emitter.on('messageLogged', function(eventArg) { // you can use arg, e, eventArg
+    console.log('Listener called', eventArg);
+});
 
+// Converting to an arrow function 
+// Get rid of the 'function' keyword
+// Put => between the body
+emitter.on('messageLogged', (eventArg) => { // you can use arg, e, eventArg
+    console.log('Listener called', eventArg);
+});
 
+// Raising an event
+emitter.emit('messageLogged', { id: 1, url: 'http//' });
+// Always remember, listener comes before emitter.
 
+// Run cmd -> node app.js
+// cmd returns ~> Listener called { id: 1, url: 'http://' }
 
+// With this technique, we can pass data about the event that just happened. 
 
+// Task
+// Raise: logging (data: message)
 
+emitter.on('logging', () => { // you can use arg, e, eventArg
+    console.log('Listener called');
+});
 
-
+// Raising an event
+emitter.emit('logging');
 
 
 
