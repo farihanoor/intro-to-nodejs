@@ -504,6 +504,67 @@ fs.readdir('$', function(err, files){
  * * Event -> An event is basically a signal that indicates that something has happened in our application.
  */
 
+// In node, we have a class called HTTP that is used to build a web server. So, we 
+// listen on a given port and every time we receive a request on that port, HTTP class
+// raises an event. Our job is to RESPOND to that event which basically involves reading
+// that request and returning the right response. Different classes in node raises 
+// different kinds of events.
+
+// Back in nodejs.org -> doc -> Events module
+// In Event module we have one class called 'EventEmitter'. It is one of the core building blocks of node.
+// First load the events module.
+
+const EventEmitter = require('events');
+
+// Here, when we call the require function, we get the EventEmitter class. 
+// Note, the word 'EventEmitter' is in Pascal-Case and not Camel-Case. This indicates 
+// that EventEmitter is not a function, not a variable but a CLASS. A Class is a container
+// for a bunch of related properties and functions which we call methods. 
+
+// In order to use this EventEmitter, we need to create an instance of this class.
+
+const emitter = new EventEmitter();
+
+// Here, 'emitter' is an object. 
+// A class defines the properties and behavior of a concept, like Human.
+// An object is an actual instance of that class. 
+
+// emit() is used to raise an event; signalling an event has happened.
+emitter.emit('messageLogged'); 
+// Pass an argument which is the name of the event.
+// Every time we log a message, we are going to raise an event called 'messageLogged'.
+// If we emit an event, we need a listener as well.
+// So, if we run this code, nothing happens. That is because nowhere in tha application, we 
+// have registered a listener that is interested in that event. 
+
+/**
+ ** A listener is a function that will be called when that event is raised.
+*/
+
+// Register a listener
+emitter.on('messageLogged', function() {
+    console.log('Listener called');
+});
+// Takes in two arguments.
+// a) Name of the event; b) callback function, the actual function
+
+// Run cmd -> node app.js
+// cmd returns ~> Listener called
+emitter.emit('messageLogged');
+// The emit should come after a listener.
+// This indicates that when we raise this event, the callback function or the listener 
+// was called.
+
+/* The order of listener, emitter is important here. the listener has to come before the emitter. If we register the listener after the 
+emit method, nothing would have happened because when call the emit() method, this emiiter iterates over all the registered listeners
+and calls them synchronously. 
+*/
+
+
+
+
+
+
 
 
 
