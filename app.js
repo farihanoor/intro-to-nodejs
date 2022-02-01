@@ -599,7 +599,6 @@ emitter.emit('messageLogged', { id: 1, url: 'http//' });
 
 // Task
 // Raise: logging (data: message)
-
 emitter.on('logging', () => { // you can use arg, e, eventArg
     console.log('Listener called');
 });
@@ -607,13 +606,31 @@ emitter.on('logging', () => { // you can use arg, e, eventArg
 // Raising an event
 emitter.emit('logging');
 
+/*******************************************/
+/**** Lesson 12: Extending EventEmitter ****/
+/*******************************************/
+
+// In real-world applications, it is unlikely that you would work with
+// 'emitter' object directly. Instead you want create a class, that has all the
+// capabilities of the EventEmitter and then use that class.
+// Go to logger2.js module. 
+
+// Here, Logger is a class.
+const Logger = require('./logger2.js');
+const logger = new Logger();
+
+// Register a Listener
+logger.on('messageLogged', () => { // you can use arg, e, eventArg
+    console.log('Listener called');
+});
+
+// Here, the 'log()' function works like an emit()
+logger.log('message');
 
 
-
-
-
-
-
+/*******************************************/
+/********* Lesson 12: HTTP Module **********/
+/*******************************************/
 
 
 
