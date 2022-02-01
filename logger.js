@@ -8,6 +8,9 @@ var url = 'http://mylogger.io/log';
 function log(message) {
     // Send an HTTP request 
     console.log(message);
+
+    // Raise an event
+    
 }
 
 // The function and var are scoped to this module or file only. We should
