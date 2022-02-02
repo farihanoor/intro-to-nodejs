@@ -632,12 +632,94 @@ logger.log('message');
 /********* Lesson 12: HTTP Module **********/
 /*******************************************/
 
+/* One of the powerful building blocks of node is the HTTP module that we use for
+creating networking applications. For example, we can create a web server that listens 
+for HTTP request on a given port. With this we can easily create a backend service for
+our client applications like a web application that we build with react or angular or a 
+mobile application running on a mobile device. 
+*/
+
+// Navigate -> nodejs.org -> docs -> HTTP
+// We can see that there are various classes like http.Agent, http.ClientRequest
+
+// Loading the HTTP module
+const http = require('http');
+
+// One of the functions defined in this module.
+// With this we can create a web server.
+const server = http.createServer();
+
+// Note, that this 'server' is an EventEmitter.
+// So, it has all the capabilities of an EventEmitter.
+
+// The listener comes before the EventEmitter
+// object.on( 'Name of the event', a callback function)
+// Create an arrow function that takes a socket and goes to 
+// the code block
+server.on('connection', (socket) => {
+    console.log('New Connection...');
+});
+
+// Whenever there is a new connection, the server raises an event
+// So, we can use the 'on' method to handle that event.
+// Before listening we want to register a listener or a handler.
+server.listen(3000); // port 3000
+console.log('Listening on port 3000...');
+
+// Run cmd -> node app.js
+// cmd returns ~> Listening on port 3000...
+// After this, go to the browser and type localhost:3000
+// Go back to cmd and you will see 'New Connection...' two times
+// Works
+// You can see that the server object raises different kinds of events 
+// that you can respond to.
+// However in real world we do not work like this.
+
+// What we commonly do is we pass a callback function to this 'CreateServer()' method.
+// The callback function takes in two parameters. 
+// a) request; b)response 
+const server = http.createServer( (req, res) => {
+    // if req.url is equal to /
+    if (req.url === '/') {
+        res.write('Hello world');
+        // We end the response
+        res.end();
+    }
+    // Go to cmd.
+    // Press ctrl c to exit
+    // Run cmd => node app.js
+    // cmd returns ~> Listening to port 3000...
+    // In the browser, go to localhost:3000
+    // 'Hello World' appears in the browser.
 
 
+    // If we want to build a backend service for our web or mobile 
+    // applications, we need to handle various routes. For example,
+    // we can have another if block. Perhaps, we want to return the list
+    // of course. We want return an array of objects using JSON.
+    // For simplicity, we just return an array of numbers.
+    // We pass the array to JSON.stringify which will convert this array to
+    // a string using a JSON syntax and then we will write it to the response.
+    if(req.url === '/api/courses') {
+        res.write(JSON.stringify([1, 2, 3]));
+        res.end();
+    }
+});
 
+// Go to cmd.
+// Press ctrl c to exit
+// Run cmd => node app.js
+// cmd returns ~> Listening to port 3000...
+// In the browser, go to localhost:3000/api/courses
+// '[
+//      1,
+//      2,
+//      3
+//  ]' appears in the browser.\
 
-
-
-
-
-
+// In real-world, we are not going to use HTTP module to build our backend server.
+// The reason is that as we add more routes, the code gets more complicated because
+// we add all them in a linear way, inside the callback function.
+// Instead of this, we use a framework called 'EXPRESS' which gives our application a 
+// clean structure to handle various routes. Internally, the 'EXPRESS' framework is 
+// built on top of the HTTP module in node.
